@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Synai Analytics Dashboard</title>
+    <title>Synai 数据分析仪表板</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
         * {
@@ -186,19 +186,21 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📊 Synai Analytics Dashboard</h1>
-            <p>Real-time insights into user behavior and AI performance</p>
+            <h1>📊 Synai 数据分析仪表板</h1>
+            <p>用户行为和AI性能的实时洞察</p>
         </div>
 
         <div class="controls">
-            <button class="btn" onclick="refreshData(true)">🔄 Refresh Data</button>
-            <button class="btn" onclick="createTestData()">📝 Create Test Data</button>
-            <button class="btn" onclick="createHistoricalData()">📅 Add Historical Data</button>
-            <button class="btn" onclick="clearData()">🗑️ Clear All Data</button>
+            <button class="btn" onclick="refreshData(true)">🔄 刷新数据</button>
+            <button class="btn" onclick="createTestData()">📝 创建测试数据</button>
+            <button class="btn" onclick="createHistoricalData()">📅 添加历史数据</button>
+            <button class="btn" onclick="createMbtiUsers()">🧠 创建MBTI用户</button>
+            <button class="btn" onclick="testMbtiChart()">🧪 测试MBTI图表</button>
+            <button class="btn" onclick="clearData()">🗑️ 清空所有数据</button>
         </div>
 
         <div id="loading" class="loading">
-            Loading analytics data...
+            正在加载分析数据...
         </div>
 
         <div id="error" class="error" style="display: none;"></div>
@@ -208,86 +210,84 @@
             <div class="dashboard-grid">
                 <!-- User Metrics Card -->
                 <div class="card">
-                    <h3>👥 User Metrics</h3>
+                    <h3>👥 用户指标</h3>
                     <div class="metric">
-                        <span class="metric-label">Total Users</span>
+                        <span class="metric-label">总用户数</span>
                         <span class="metric-value highlight" id="totalUsers">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Daily Active Users</span>
+                        <span class="metric-label">日活跃用户</span>
                         <span class="metric-value" id="dailyActiveUsers">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Weekly Active Users</span>
+                        <span class="metric-label">周活跃用户</span>
                         <span class="metric-value" id="weeklyActiveUsers">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Monthly Active Users</span>
+                        <span class="metric-label">月活跃用户</span>
                         <span class="metric-value" id="monthlyActiveUsers">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">New Users Today</span>
+                        <span class="metric-label">今日新用户</span>
                         <span class="metric-value" id="newUsers">-</span>
                     </div>
                 </div>
 
                 <!-- Message Metrics Card -->
                 <div class="card">
-                    <h3>💬 Message Metrics</h3>
+                    <h3>💬 消息指标</h3>
                     <div class="metric">
-                        <span class="metric-label">Total Messages</span>
+                        <span class="metric-label">总消息数</span>
                         <span class="metric-value highlight" id="totalMessages">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">User Messages</span>
+                        <span class="metric-label">用户消息</span>
                         <span class="metric-value" id="userMessages">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Assistant Messages</span>
+                        <span class="metric-label">助手消息</span>
                         <span class="metric-value" id="assistantMessages">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Avg Message Length</span>
+                        <span class="metric-label">平均消息长度</span>
                         <span class="metric-value" id="averageMessageLength">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Avg Response Time</span>
+                        <span class="metric-label">平均响应时间</span>
                         <span class="metric-value" id="averageResponseTime">-</span>
                     </div>
                 </div>
 
                 <!-- Engagement Metrics Card -->
                 <div class="card">
-                    <h3>📈 Engagement Metrics</h3>
+                    <h3>📈 参与度指标</h3>
                     <div class="metric">
-                        <span class="metric-label">Onboarding Rate</span>
+                        <span class="metric-label">入门完成率</span>
                         <span class="metric-value highlight" id="onboardingCompletionRate">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Top MBTI Type</span>
+                        <span class="metric-label">热门MBTI类型</span>
                         <span class="metric-value" id="topMbtiType">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">Messages per User</span>
+                        <span class="metric-label">每用户消息数</span>
                         <span class="metric-value" id="messagesPerUser">-</span>
                     </div>
                 </div>
             </div>
 
             <!-- Charts Section -->
-            <div class="chart-container">
-                <h3>📊 Message Activity Over Time</h3>
-                <canvas id="messageChart" width="400" height="200"></canvas>
-            </div>
 
             <div class="chart-container">
-                <h3>🎯 User Distribution by MBTI</h3>
-                <canvas id="mbtiChart" width="400" height="200"></canvas>
+                <h3>🎯 MBTI用户分布</h3>
+                <div style="position: relative; height: 400px; width: 100%;">
+                    <canvas id="mbtiChart"></canvas>
+                </div>
             </div>
         </div>
 
         <div class="timestamp" id="lastUpdated">
-            Last updated: Never
+            最后更新: 从未
         </div>
     </div>
 
@@ -313,12 +313,12 @@
                 updateDashboard(data);
                 
                 if (showSuccessMessage) {
-                    showSuccess('Data refreshed successfully!');
+                    showSuccess('数据刷新成功！');
                 }
                 
             } catch (error) {
                 console.error('Error fetching data:', error);
-                showError('Failed to load analytics data: ' + error.message);
+                showError('加载分析数据失败: ' + error.message);
             } finally {
                 showLoading(false);
             }
@@ -337,9 +337,9 @@
             document.getElementById('userMessages').textContent = data.userMessages || 0;
             document.getElementById('assistantMessages').textContent = data.assistantMessages || 0;
             document.getElementById('averageMessageLength').textContent = 
-                data.averageMessageLength ? Math.round(data.averageMessageLength) + ' chars' : '0 chars';
+                data.averageMessageLength ? Math.round(data.averageMessageLength) + ' 字符' : '0 字符';
             document.getElementById('averageResponseTime').textContent = 
-                data.averageResponseTime ? Math.round(data.averageResponseTime) + 'ms' : '0ms';
+                data.averageResponseTime ? Math.round(data.averageResponseTime) + '毫秒' : '0毫秒';
 
             // Update engagement metrics
             document.getElementById('onboardingCompletionRate').textContent = 
@@ -353,7 +353,7 @@
 
             // Update timestamp
             document.getElementById('lastUpdated').textContent = 
-                'Last updated: ' + new Date().toLocaleString();
+                '最后更新: ' + new Date().toLocaleString();
 
             // Show dashboard
             document.getElementById('dashboard').style.display = 'block';
@@ -372,7 +372,7 @@
             messageChart = new Chart(messageCtx, {
                 type: 'doughnut',
                 data: {
-                    labels: ['User Messages', 'Assistant Messages'],
+                    labels: ['用户消息', '助手消息'],
                     datasets: [{
                         data: [data.userMessages || 0, data.assistantMessages || 0],
                         backgroundColor: ['#667eea', '#764ba2'],
@@ -389,61 +389,94 @@
                 }
             });
 
-            // MBTI distribution chart with real data
+            // MBTI distribution chart - SIMPLIFIED VERSION
             const mbtiCtx = document.getElementById('mbtiChart').getContext('2d');
             if (mbtiChart) {
                 mbtiChart.destroy();
             }
             
+            // Define all 16 MBTI types in order
+            const allMbtiTypes = [
+                'INTJ', 'INTP', 'ENTJ', 'ENTP',
+                'INFJ', 'INFP', 'ENFJ', 'ENFP',
+                'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ',
+                'ISTP', 'ISFP', 'ESTP', 'ESFP'
+            ];
+            
+            // Initialize with zeros for all types
+            let mbtiData = {};
+            allMbtiTypes.forEach(type => {
+                mbtiData[type] = 0;
+            });
+            
+            // Try to fetch real data, but don't fail if it doesn't work
             try {
                 const mbtiResponse = await fetch('/api/analytics/mbti-distribution');
-                const mbtiData = await mbtiResponse.json();
-                
-                const labels = Object.keys(mbtiData);
-                const values = Object.values(mbtiData);
-                
-                mbtiChart = new Chart(mbtiCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: labels,
-                        datasets: [{
-                            label: 'Users',
-                            data: values,
-                            backgroundColor: '#667eea',
-                            borderColor: '#764ba2',
-                            borderWidth: 1
-                        }]
+                if (mbtiResponse.ok) {
+                    const realData = await mbtiResponse.json();
+                    // Merge real data with our default zeros
+                    Object.keys(realData).forEach(key => {
+                        if (allMbtiTypes.includes(key)) {
+                            mbtiData[key] = realData[key];
+                        }
+                    });
+                }
+            } catch (error) {
+                console.log('MBTI data fetch failed, using default zeros:', error);
+            }
+            
+            // Create the chart with guaranteed data
+            const values = allMbtiTypes.map(type => mbtiData[type] || 0);
+            
+            mbtiChart = new Chart(mbtiCtx, {
+                type: 'bar',
+                data: {
+                    labels: allMbtiTypes,
+                    datasets: [{
+                        label: '用户数',
+                        data: values,
+                        backgroundColor: values.map(value => 
+                            value > 0 ? '#667eea' : '#f0f0f0'
+                        ),
+                        borderColor: '#764ba2',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                precision: 0
+                            },
+                            grid: {
+                                color: '#e0e0e0'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
                     },
-                    options: {
-                        responsive: true,
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: 1
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            callbacks: {
+                                label: function(context) {
+                                    return context.parsed.y + ' 用户';
                                 }
                             }
                         }
                     }
-                });
-            } catch (error) {
-                console.error('Error loading MBTI data:', error);
-                // Fallback to empty chart
-                mbtiChart = new Chart(mbtiCtx, {
-                    type: 'bar',
-                    data: {
-                        labels: ['No Data'],
-                        datasets: [{
-                            label: 'Users',
-                            data: [0],
-                            backgroundColor: '#667eea'
-                        }]
-                    },
-                    options: {
-                        responsive: true
-                    }
-                });
-            }
+                }
+            });
         }
 
         async function createTestData() {
@@ -451,10 +484,10 @@
                 showLoading(true);
                 const response = await fetch('/api/test-data/create-sample-messages');
                 const result = await response.json();
-                showSuccess(`Test data created: ${result.totalMessages} messages added!`);
+                showSuccess(`测试数据已创建: 添加了 ${result.totalMessages} 条消息！`);
                 setTimeout(refreshData, 1000);
             } catch (error) {
-                showError('Failed to create test data: ' + error.message);
+                showError('创建测试数据失败: ' + error.message);
             } finally {
                 showLoading(false);
             }
@@ -465,25 +498,94 @@
                 showLoading(true);
                 const response = await fetch('/api/test-data/create-historical-messages');
                 const result = await response.json();
-                showSuccess(`Historical data created: ${result.totalMessages} messages added!`);
+                showSuccess(`历史数据已创建: 添加了 ${result.totalMessages} 条消息！`);
                 setTimeout(refreshData, 1000);
             } catch (error) {
-                showError('Failed to create historical data: ' + error.message);
+                showError('创建历史数据失败: ' + error.message);
             } finally {
                 showLoading(false);
             }
         }
 
+        async function createMbtiUsers() {
+            try {
+                showLoading(true);
+                const response = await fetch('/api/test-data/create-mbti-users', { method: 'POST' });
+                const result = await response.json();
+                showSuccess(`MBTI用户已创建: 添加了 ${result.totalUsers} 个用户！`);
+                setTimeout(refreshData, 1000);
+            } catch (error) {
+                showError('创建MBTI用户失败: ' + error.message);
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        // Test function to manually update MBTI chart with sample data
+        function testMbtiChart() {
+            if (mbtiChart) {
+                mbtiChart.destroy();
+            }
+            
+            const mbtiCtx = document.getElementById('mbtiChart').getContext('2d');
+            const allMbtiTypes = [
+                'INTJ', 'INTP', 'ENTJ', 'ENTP',
+                'INFJ', 'INFP', 'ENFJ', 'ENFP',
+                'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ',
+                'ISTP', 'ISFP', 'ESTP', 'ESFP'
+            ];
+            
+            // Sample data for testing
+            const testData = [5, 3, 7, 2, 8, 4, 6, 9, 3, 5, 4, 7, 2, 6, 8, 1];
+            
+            mbtiChart = new Chart(mbtiCtx, {
+                type: 'bar',
+                data: {
+                    labels: allMbtiTypes,
+                    datasets: [{
+                        label: '用户数',
+                        data: testData,
+                        backgroundColor: testData.map(value => 
+                            value > 0 ? '#667eea' : '#f0f0f0'
+                        ),
+                        borderColor: '#764ba2',
+                        borderWidth: 1,
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1,
+                                precision: 0
+                            }
+                        }
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    }
+                }
+            });
+            
+            showSuccess('MBTI图表测试数据已加载！');
+        }
+
         async function clearData() {
-            if (confirm('Are you sure you want to clear all message data?')) {
+            if (confirm('确定要清空所有用户和消息数据吗？')) {
                 try {
                     showLoading(true);
                     const response = await fetch('/api/test-data/clear-all-messages', { method: 'DELETE' });
                     const result = await response.json();
-                    showSuccess(`Data cleared: ${result.deletedCount} messages removed!`);
+                    showSuccess(`数据已清空: 删除了 ${result.deletedMessages} 条消息和 ${result.deletedUsers} 个用户！`);
                     setTimeout(refreshData, 1000);
                 } catch (error) {
-                    showError('Failed to clear data: ' + error.message);
+                    showError('清空数据失败: ' + error.message);
                 } finally {
                     showLoading(false);
                 }
