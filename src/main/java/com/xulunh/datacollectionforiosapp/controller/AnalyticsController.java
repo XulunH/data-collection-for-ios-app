@@ -37,7 +37,6 @@ public class AnalyticsController {
         summary.put("userMessages", metrics.getUserMessages());
         summary.put("assistantMessages", metrics.getAssistantMessages());
         summary.put("averageMessageLength", metrics.getAverageMessageLength());
-        summary.put("averageResponseTime", metrics.getAverageResponseTime());
         summary.put("onboardingCompletionRate", metrics.getOnboardingCompletionRate());
         summary.put("topMbtiType", metrics.getTopMbtiType());
         summary.put("calculatedAt", metrics.getCalculatedAt());
@@ -73,7 +72,6 @@ public class AnalyticsController {
         messageAnalytics.put("assistantMessages", metrics.getAssistantMessages());
         messageAnalytics.put("memoryMessages", metrics.getMemoryMessages());
         messageAnalytics.put("averageMessageLength", metrics.getAverageMessageLength());
-        messageAnalytics.put("averageResponseTime", metrics.getAverageResponseTime());
         messageAnalytics.put("totalSessions", metrics.getTotalSessions());
         messageAnalytics.put("averageSessionLength", metrics.getAverageSessionLength());
         messageAnalytics.put("averageMessagesPerSession", metrics.getAverageMessagesPerSession());
@@ -86,12 +84,22 @@ public class AnalyticsController {
         return analyticsService.getMbtiDistribution();
     }
 
+    @GetMapping("/time-distribution/hour")
+    public Map<String, Long> getMessagesByHour() {
+        return analyticsService.getMessagesByHour();
+    }
+
+    @GetMapping("/time-distribution/day")
+    public Map<String, Long> getMessagesByDayOfWeek() {
+        return analyticsService.getMessagesByDayOfWeek();
+    }
+
     @GetMapping("/")
     public Map<String, String> analytics() {
         return Map.of(
             "status", "Analytics API is running",
             "message", "Use /api/analytics/summary for quick overview",
-            "endpoints", "/daily, /summary, /users, /messages, /mbti-distribution"
+            "endpoints", "/daily, /summary, /users, /messages, /mbti-distribution, /time-distribution/hour, /time-distribution/day"
         );
     }
 }

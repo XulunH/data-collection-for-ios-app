@@ -18,7 +18,7 @@
 ## 前置条件
 
 ### 本地环境要求
-- SSH 密钥文件: `~/SynAI/synai-test-env-key.pem`
+- SSH 密钥文件: `./synai-test-env-key.pem`
 - rsync 工具 (用于代码同步)
 - 本地项目代码已更新并测试通过
 
@@ -37,7 +37,7 @@
 
 ```bash
 # 连接到服务器
-ssh -i ~/SynAI/synai-test-env-key.pem root@120.26.82.225
+ssh -i ./synai-test-env-key.pem root@120.26.82.225
 
 # 创建备份
 cd /opt/synai
@@ -50,7 +50,7 @@ cp -r backend backend_backup_$(date +%Y%m%d_%H%M%S)
 
 ```bash
 # 从本地上传 SQL 脚本
-scp -i ~/SynAI/synai-test-env-key.pem \
+scp -i ./synai-test-env-key.pem \
     create_users_table.sql \
     create_invitation_code_usage_table.sql \
     add_invitation_code_column.sql \
@@ -61,7 +61,7 @@ scp -i ~/SynAI/synai-test-env-key.pem \
 
 ```bash
 # 在服务器上执行
-ssh -i ~/SynAI/synai-test-env-key.pem root@120.26.82.225
+ssh -i ./synai-test-env-key.pem root@120.26.82.225
 
 cd /opt/synai
 
@@ -89,7 +89,7 @@ docker exec mysql-synai mysql -u root -proot synai_user -e "SHOW TABLES;" | grep
 ```bash
 # 从本地同步 user-service 代码
 rsync -avz --delete \
-    -e "ssh -i ~/SynAI/synai-test-env-key.pem" \
+    -e "ssh -i ./synai-test-env-key.pem" \
     backend/user-service/ \
     root@120.26.82.225:/opt/synai/backend/user-service/ \
     --exclude=venv --exclude=__pycache__ --exclude=.env
@@ -99,7 +99,7 @@ rsync -avz --delete \
 
 ```bash
 # 连接到服务器
-ssh -i ~/SynAI/synai-test-env-key.pem root@120.26.82.225
+ssh -i ./synai-test-env-key.pem root@120.26.82.225
 
 # 停止现有服务
 pkill -f 'uvicorn app.main:app.*port 8000'
@@ -129,7 +129,7 @@ curl -s http://127.0.0.1:8000/health
 ```bash
 # 从本地同步 message-service 代码
 rsync -avz --delete \
-    -e "ssh -i ~/SynAI/synai-test-env-key.pem" \
+    -e "ssh -i ./synai-test-env-key.pem" \
     backend/message-service/ \
     root@120.26.82.225:/opt/synai/backend/message-service/ \
     --exclude=venv --exclude=__pycache__ --exclude=.env
@@ -166,7 +166,7 @@ curl -s http://127.0.0.1:8003/health
 ```bash
 # 从本地同步 model-service 代码
 rsync -avz --delete \
-    -e "ssh -i ~/SynAI/synai-test-env-key.pem" \
+    -e "ssh -i ./synai-test-env-key.pem" \
     backend/model-service/ \
     root@120.26.82.225:/opt/synai/backend/model-service/ \
     --exclude=venv --exclude=__pycache__ --exclude=.env --exclude=logs
@@ -176,7 +176,7 @@ rsync -avz --delete \
 
 ```bash
 # 连接到服务器
-ssh -i ~/SynAI/synai-test-env-key.pem root@120.26.82.225
+ssh -i ./synai-test-env-key.pem root@120.26.82.225
 
 cd /opt/synai/backend/model-service
 

@@ -192,11 +192,11 @@
 
         <div class="controls">
             <button class="btn" onclick="refreshData(true)">🔄 刷新数据</button>
-            <button class="btn" onclick="createTestData()">📝 创建测试数据</button>
+            <!-- <button class="btn" onclick="createTestData()">📝 创建测试数据</button>
             <button class="btn" onclick="createHistoricalData()">📅 添加历史数据</button>
             <button class="btn" onclick="createMbtiUsers()">🧠 创建MBTI用户</button>
             <button class="btn" onclick="testMbtiChart()">🧪 测试MBTI图表</button>
-            <button class="btn" onclick="clearData()">🗑️ 清空所有数据</button>
+            <button class="btn" onclick="clearData()">🗑️ 清空所有数据</button> -->
         </div>
 
         <div id="loading" class="loading">
@@ -252,10 +252,6 @@
                         <span class="metric-label">平均消息长度</span>
                         <span class="metric-value" id="averageMessageLength">-</span>
                     </div>
-                    <div class="metric">
-                        <span class="metric-label">平均响应时间</span>
-                        <span class="metric-value" id="averageResponseTime">-</span>
-                    </div>
                 </div>
 
                 <!-- Engagement Metrics Card -->
@@ -277,13 +273,20 @@
             </div>
 
             <!-- Charts Section -->
-
             <div class="chart-container">
-                <h3>🎯 MBTI用户分布</h3>
+                <h3>⏰ 消息时间分布 (小时)</h3>
                 <div style="position: relative; height: 400px; width: 100%;">
-                    <canvas id="mbtiChart"></canvas>
+                    <canvas id="hourlyChart"></canvas>
                 </div>
             </div>
+
+            <div class="chart-container">
+                <h3>📅 消息时间分布 (星期)</h3>
+                <div style="position: relative; height: 400px; width: 100%;">
+                    <canvas id="dailyChart"></canvas>
+                </div>
+            </div>
+
         </div>
 
         <div class="timestamp" id="lastUpdated">
@@ -292,7 +295,7 @@
     </div>
 
     <script>
-        let messageChart, mbtiChart;
+        let messageChart, hourlyChart, dailyChart;
 
         // Initialize dashboard
         document.addEventListener('DOMContentLoaded', function() {
@@ -338,8 +341,6 @@
             document.getElementById('assistantMessages').textContent = data.assistantMessages || 0;
             document.getElementById('averageMessageLength').textContent = 
                 data.averageMessageLength ? Math.round(data.averageMessageLength) + ' 字符' : '0 字符';
-            document.getElementById('averageResponseTime').textContent = 
-                data.averageResponseTime ? Math.round(data.averageResponseTime) + '毫秒' : '0毫秒';
 
             // Update engagement metrics
             document.getElementById('onboardingCompletionRate').textContent = 
@@ -351,9 +352,18 @@
                 Math.round((data.totalMessages || 0) / data.totalUsers * 10) / 10 : 0;
             document.getElementById('messagesPerUser').textContent = messagesPerUser;
 
-            // Update timestamp
+            // Update timestamp (China time)
+            const chinaTime = new Date().toLocaleString('zh-CN', {
+                timeZone: 'Asia/Shanghai',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit'
+            });
             document.getElementById('lastUpdated').textContent = 
-                '最后更新: ' + new Date().toLocaleString();
+                '最后更新: ' + chinaTime + ' (北京时间)';
 
             // Show dashboard
             document.getElementById('dashboard').style.display = 'block';
@@ -363,120 +373,101 @@
         }
 
         async function updateCharts(data) {
-            // Simple message activity chart
-            const messageCtx = document.getElementById('messageChart').getContext('2d');
-            if (messageChart) {
-                messageChart.destroy();
+            // Hourly distribution chart
+            const hourlyCtx = document.getElementById('hourlyChart').getContext('2d');
+            if (hourlyChart) {
+                hourlyChart.destroy();
             }
             
-            messageChart = new Chart(messageCtx, {
-                type: 'doughnut',
-                data: {
-                    labels: ['用户消息', '助手消息'],
-                    datasets: [{
-                        data: [data.userMessages || 0, data.assistantMessages || 0],
-                        backgroundColor: ['#667eea', '#764ba2'],
-                        borderWidth: 0
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            position: 'bottom'
-                        }
-                    }
-                }
-            });
-
-            // MBTI distribution chart - SIMPLIFIED VERSION
-            const mbtiCtx = document.getElementById('mbtiChart').getContext('2d');
-            if (mbtiChart) {
-                mbtiChart.destroy();
-            }
-            
-            // Define all 16 MBTI types in order
-            const allMbtiTypes = [
-                'INTJ', 'INTP', 'ENTJ', 'ENTP',
-                'INFJ', 'INFP', 'ENFJ', 'ENFP',
-                'ISTJ', 'ISFJ', 'ESTJ', 'ESFJ',
-                'ISTP', 'ISFP', 'ESTP', 'ESFP'
-            ];
-            
-            // Initialize with zeros for all types
-            let mbtiData = {};
-            allMbtiTypes.forEach(type => {
-                mbtiData[type] = 0;
-            });
-            
-            // Try to fetch real data, but don't fail if it doesn't work
             try {
-                const mbtiResponse = await fetch('/api/analytics/mbti-distribution');
-                if (mbtiResponse.ok) {
-                    const realData = await mbtiResponse.json();
-                    // Merge real data with our default zeros
-                    Object.keys(realData).forEach(key => {
-                        if (allMbtiTypes.includes(key)) {
-                            mbtiData[key] = realData[key];
+                const hourlyResponse = await fetch('/api/analytics/time-distribution/hour');
+                if (hourlyResponse.ok) {
+                    const hourlyData = await hourlyResponse.json();
+                    const hours = Object.keys(hourlyData).sort();
+                    const counts = hours.map(hour => hourlyData[hour]);
+                    
+                    hourlyChart = new Chart(hourlyCtx, {
+                        type: 'line',
+                        data: {
+                            labels: hours,
+                            datasets: [{
+                                label: '消息数量',
+                                data: counts,
+                                borderColor: '#667eea',
+                                backgroundColor: 'rgba(102, 126, 234, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
+                                },
+                                x: {
+                                    title: {
+                                        display: true,
+                                        text: '小时'
+                                    }
+                                }
+                            }
                         }
                     });
                 }
             } catch (error) {
-                console.log('MBTI data fetch failed, using default zeros:', error);
+                console.log('Hourly data fetch failed:', error);
+            }
+
+            // Daily distribution chart
+            const dailyCtx = document.getElementById('dailyChart').getContext('2d');
+            if (dailyChart) {
+                dailyChart.destroy();
             }
             
-            // Create the chart with guaranteed data
-            const values = allMbtiTypes.map(type => mbtiData[type] || 0);
-            
-            mbtiChart = new Chart(mbtiCtx, {
-                type: 'bar',
-                data: {
-                    labels: allMbtiTypes,
-                    datasets: [{
-                        label: '用户数',
-                        data: values,
-                        backgroundColor: values.map(value => 
-                            value > 0 ? '#667eea' : '#f0f0f0'
-                        ),
-                        borderColor: '#764ba2',
-                        borderWidth: 1,
-                        borderRadius: 4
-                    }]
-                },
-                options: {
-                    responsive: true,
-                    maintainAspectRatio: false,
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            ticks: {
-                                stepSize: 1,
-                                precision: 0
-                            },
-                            grid: {
-                                color: '#e0e0e0'
-                            }
+            try {
+                const dailyResponse = await fetch('/api/analytics/time-distribution/day');
+                if (dailyResponse.ok) {
+                    const dailyData = await dailyResponse.json();
+                    const days = ['周一', '周二', '周三', '周四', '周五', '周六', '周日'];
+                    const counts = days.map(day => dailyData[day] || 0);
+                    
+                    dailyChart = new Chart(dailyCtx, {
+                        type: 'bar',
+                        data: {
+                            labels: days,
+                            datasets: [{
+                                label: '消息数量',
+                                data: counts,
+                                backgroundColor: '#764ba2',
+                                borderColor: '#667eea',
+                                borderWidth: 1,
+                                borderRadius: 4
+                            }]
                         },
-                        x: {
-                            grid: {
-                                display: false
-                            }
-                        }
-                    },
-                    plugins: {
-                        legend: {
-                            display: false
-                        },
-                        tooltip: {
-                            callbacks: {
-                                label: function(context) {
-                                    return context.parsed.y + ' 用户';
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
                                 }
                             }
                         }
-                    }
+                    });
                 }
-            });
+            } catch (error) {
+                console.log('Daily data fetch failed:', error);
+            }
+
         }
 
         async function createTestData() {
@@ -620,8 +611,8 @@
             document.getElementById('success').style.display = 'none';
         }
 
-        // Auto-refresh every 60 seconds
-        setInterval(refreshData, 60000);
+        // Auto-refresh every 30 minutes
+        setInterval(refreshData, 1800000);
     </script>
 </body>
 </html>

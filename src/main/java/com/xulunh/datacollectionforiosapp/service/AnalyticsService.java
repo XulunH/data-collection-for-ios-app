@@ -169,4 +169,47 @@ public class AnalyticsService {
         
         return mbtiCount;
     }
+
+    public Map<String, Long> getMessagesByHour() {
+        List<Message> messages = messageRepository.findAll();
+        Map<String, Long> hourlyCount = new HashMap<>();
+        
+        // Initialize all hours with 0
+        for (int hour = 0; hour < 24; hour++) {
+            hourlyCount.put(String.format("%02d:00", hour), 0L);
+        }
+        
+        // Count messages by hour
+        for (Message message : messages) {
+            if (message.getTimestamp() != null) {
+                int hour = message.getTimestamp().getHour();
+                String hourKey = String.format("%02d:00", hour);
+                hourlyCount.put(hourKey, hourlyCount.get(hourKey) + 1);
+            }
+        }
+        
+        return hourlyCount;
+    }
+
+    public Map<String, Long> getMessagesByDayOfWeek() {
+        List<Message> messages = messageRepository.findAll();
+        Map<String, Long> dailyCount = new HashMap<>();
+        
+        // Initialize all days with 0
+        String[] days = {"周一", "周二", "周三", "周四", "周五", "周六", "周日"};
+        for (String day : days) {
+            dailyCount.put(day, 0L);
+        }
+        
+        // Count messages by day of week
+        for (Message message : messages) {
+            if (message.getTimestamp() != null) {
+                int dayOfWeek = message.getTimestamp().getDayOfWeek().getValue(); // 1=Monday, 7=Sunday
+                String dayKey = days[dayOfWeek - 1];
+                dailyCount.put(dayKey, dailyCount.get(dayKey) + 1);
+            }
+        }
+        
+        return dailyCount;
+    }
 }
