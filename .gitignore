@@ -28,3 +28,7 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Maven Target - ignore everything except JAR ###
+target/
+!target/*.jar

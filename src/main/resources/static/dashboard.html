@@ -338,9 +338,9 @@
             document.getElementById('newUsers').textContent = data.newUsers || 0;
 
             // Update message metrics
-            document.getElementById('totalMessages').textContent = data.totalMessages || 0;
+            // document.getElementById('totalMessages').textContent = data.totalMessages || 0;
             document.getElementById('userMessages').textContent = data.userMessages || 0;
-            document.getElementById('assistantMessages').textContent = data.assistantMessages || 0;
+            //document.getElementById('assistantMessages').textContent = data.assistantMessages || 0;
             document.getElementById('averageMessageLength').textContent = 
                 data.averageMessageLength ? Math.round(data.averageMessageLength) + ' 字符' : '0 字符';
 
