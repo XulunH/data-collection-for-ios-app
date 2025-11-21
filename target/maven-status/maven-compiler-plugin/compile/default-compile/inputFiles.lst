@@ -1,0 +1,14 @@
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/DataCollectionForIosAppApplication.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/controller/AnalyticsController.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/controller/DashboardController.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/controller/HealthController.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/controller/MongoTestController.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/controller/TestController.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/controller/TestDataController.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/model/AnalyticsMetrics.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/model/MemoryEvent.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/model/Message.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/model/User.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/repository/MessageRepository.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/repository/UserRepository.java
+/Users/xulun/Desktop/synai/data-collection-for-ios-app/src/main/java/com/xulunh/datacollectionforiosapp/service/AnalyticsService.java

@@ -1,0 +1,15 @@
+com/xulunh/datacollectionforiosapp/controller/DashboardController.class
+com/xulunh/datacollectionforiosapp/model/MemoryEvent.class
+com/xulunh/datacollectionforiosapp/model/AnalyticsMetrics$AnalyticsMetricsBuilder.class
+com/xulunh/datacollectionforiosapp/repository/MessageRepository.class
+com/xulunh/datacollectionforiosapp/controller/MongoTestController.class
+com/xulunh/datacollectionforiosapp/model/Message.class
+com/xulunh/datacollectionforiosapp/service/AnalyticsService.class
+com/xulunh/datacollectionforiosapp/controller/AnalyticsController.class
+com/xulunh/datacollectionforiosapp/controller/TestController.class
+com/xulunh/datacollectionforiosapp/controller/HealthController.class
+com/xulunh/datacollectionforiosapp/model/AnalyticsMetrics.class
+com/xulunh/datacollectionforiosapp/DataCollectionForIosAppApplication.class
+com/xulunh/datacollectionforiosapp/repository/UserRepository.class
+com/xulunh/datacollectionforiosapp/model/User.class
+com/xulunh/datacollectionforiosapp/controller/TestDataController.class
