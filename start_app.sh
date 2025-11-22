@@ -5,7 +5,7 @@ KEY_PATH="./synai-test-env-key.pem"
 REMOTE_HOST="root@120.26.82.225"
 REMOTE_DIR="/opt/synai/data-collection"
 JAR_FILE="data-collection-for-ios-app-0.0.1-SNAPSHOT.jar"
-LOCAL_PORT=8080
+LOCAL_PORT=8085
 REMOTE_PORT=8080
 
 echo "=========================================="
