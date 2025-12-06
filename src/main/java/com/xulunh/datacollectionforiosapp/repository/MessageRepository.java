@@ -47,4 +47,8 @@ public interface MessageRepository extends MongoRepository<Message, String> {
     // Count messages per user
     @Query(value = "{}", fields = "{'user_id': 1}")
     List<Object> countMessagesPerUser();
+    
+    // Count messages by user after a specific date
+    @Query(value = "{'user_id': ?0, 'timestamp': {$gte: ?1}}", count = true)
+    long countByUserIdAndTimestampAfter(String userId, LocalDateTime afterDate);
 }

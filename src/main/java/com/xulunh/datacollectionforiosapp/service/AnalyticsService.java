@@ -14,7 +14,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 @Service
 public class AnalyticsService {
@@ -53,6 +52,7 @@ public class AnalyticsService {
         // Engagement metrics
         double userRetentionRate = calculateUserRetentionRate();
         double onboardingCompletionRate = totalUsers > 0 ? (double) onboardingCompleted / totalUsers * 100 : 0;
+        double returnUserRate = calculateReturnUserRate();
 
         // MBTI distribution
         List<Object[]> mbtiData = userRepository.countUsersByMbti();
@@ -77,6 +77,7 @@ public class AnalyticsService {
                 .averageMessagesPerSession(averageMessagesPerSession)
                 .userRetentionRate(userRetentionRate)
                 .onboardingCompletionRate(onboardingCompletionRate)
+                .returnUserRate(returnUserRate)
                 .topMbtiType(topMbtiType)
                 .mbtiUsersCount(mbtiUsersCount)
                 .calculatedAt(LocalDateTime.now())
@@ -154,6 +155,32 @@ public class AnalyticsService {
         long totalUsers = userRepository.count();
         
         return totalUsers > 0 ? (double) usersFromWeekAgo / totalUsers * 100 : 0;
+    }
+
+    private double calculateReturnUserRate() {
+        List<User> allUsers = userRepository.findAll();
+        if (allUsers.isEmpty()) return 0.0;
+        
+        long returnUsers = 0;
+        
+        for (User user : allUsers) {
+            if (user.getCreatedAt() == null) continue;
+            
+            // Get the day AFTER registration
+            LocalDateTime dayAfterRegistration = user.getCreatedAt().plusDays(1).toLocalDate().atStartOfDay();
+            
+            // Check if user has ANY message after their registration day
+            long messagesAfterFirstDay = messageRepository.countByUserIdAndTimestampAfter(
+                user.getUuid(), 
+                dayAfterRegistration
+            );
+            
+            if (messagesAfterFirstDay > 0) {
+                returnUsers++;
+            }
+        }
+        
+        return (double) returnUsers / allUsers.size() * 100;
     }
 
     public Map<String, Long> getMbtiDistribution() {
