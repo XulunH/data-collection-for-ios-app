@@ -40,7 +40,6 @@ public class AnalyticsMetrics {
     // Engagement metrics
     private Double userRetentionRate;
     private Double onboardingCompletionRate;
-    private Double returnUserRate;
     
     // MBTI distribution
     private String topMbtiType;

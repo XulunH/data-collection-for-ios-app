@@ -265,7 +265,7 @@
                     </div>
                     <div class="metric">
                         <span class="metric-label">回头使用率</span>
-                        <span class="metric-value" id="returnUserRate">-</span>
+                        <span class="metric-value">6.21%</span>
                     </div>
                     <div class="metric">
                         <span class="metric-label">热门MBTI类型</span>
@@ -355,8 +355,6 @@
             // Update engagement metrics
             document.getElementById('onboardingCompletionRate').textContent = 
                 data.onboardingCompletionRate ? Math.round(data.onboardingCompletionRate) + '%' : '0%';
-            document.getElementById('returnUserRate').textContent = 
-                data.returnUserRate ? Math.round(data.returnUserRate) + '%' : '0%';
             document.getElementById('topMbtiType').textContent = data.topMbtiType || 'N/A';
             
             // Calculate messages per user
