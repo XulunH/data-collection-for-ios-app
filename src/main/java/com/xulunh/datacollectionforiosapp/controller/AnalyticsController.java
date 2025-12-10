@@ -33,6 +33,7 @@ public class AnalyticsController {
         summary.put("weeklyActiveUsers", metrics.getWeeklyActiveUsers());
         summary.put("monthlyActiveUsers", metrics.getMonthlyActiveUsers());
         summary.put("newUsers", metrics.getNewUsers());
+        summary.put("weeklyNewUsers", metrics.getWeeklyNewUsers());
         summary.put("totalMessages", metrics.getTotalMessages());
         summary.put("userMessages", metrics.getUserMessages());
         summary.put("assistantMessages", metrics.getAssistantMessages());
