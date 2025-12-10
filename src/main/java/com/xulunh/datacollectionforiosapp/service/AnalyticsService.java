@@ -31,10 +31,9 @@ public class AnalyticsService {
         // User metrics
         long totalUsers = userRepository.count();
         long newUsers = userRepository.countNewUsersByDateRange(startOfDay, endOfDay);
-        long weeklyNewUsers = userRepository.countNewUsersByDateRange(
-            LocalDateTime.now().minus(7, ChronoUnit.DAYS), 
-            LocalDateTime.now()
-        );
+        LocalDateTime weekAgo = LocalDateTime.now().minusDays(7).toLocalDate().atStartOfDay();
+        LocalDateTime endOfToday = LocalDateTime.now().toLocalDate().plusDays(1).atStartOfDay();
+        long weeklyNewUsers = userRepository.countNewUsersByDateRange(weekAgo, endOfToday);
         long activeUsers = calculateDailyActiveUsers(startOfDay, endOfDay);
         long onboardingCompleted = userRepository.countOnboardingCompleted();
 
