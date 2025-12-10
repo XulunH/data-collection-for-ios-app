@@ -23,6 +23,7 @@ public class AnalyticsMetrics {
     private Long weeklyActiveUsers;
     private Long monthlyActiveUsers;
     private Long newUsers;
+    private Long weeklyNewUsers;
     
     // Message metrics
     private Long totalMessages;

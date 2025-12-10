@@ -231,6 +231,10 @@
                         <span class="metric-label">今日新注册用户</span>
                         <span class="metric-value" id="newUsers">-</span>
                     </div>
+                    <div class="metric">
+                        <span class="metric-label">本周新注册用户</span>
+                        <span class="metric-value" id="weeklyNewUsers">-</span>
+                    </div>
                 </div>
 
                 <!-- Message Metrics Card -->
@@ -344,6 +348,7 @@
             document.getElementById('weeklyActiveUsers').textContent = data.weeklyActiveUsers || 0;
             document.getElementById('monthlyActiveUsers').textContent = data.monthlyActiveUsers || 0;
             document.getElementById('newUsers').textContent = data.newUsers || 0;
+            document.getElementById('weeklyNewUsers').textContent = data.weeklyNewUsers || 0;
 
             // Update message metrics
             // document.getElementById('totalMessages').textContent = data.totalMessages || 0;

@@ -14,7 +14,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 import java.util.Map;
 import java.util.HashMap;
-import java.util.stream.Collectors;
 
 @Service
 public class AnalyticsService {
@@ -32,6 +31,10 @@ public class AnalyticsService {
         // User metrics
         long totalUsers = userRepository.count();
         long newUsers = userRepository.countNewUsersByDateRange(startOfDay, endOfDay);
+        long weeklyNewUsers = userRepository.countNewUsersByDateRange(
+            LocalDateTime.now().minus(7, ChronoUnit.DAYS), 
+            LocalDateTime.now()
+        );
         long activeUsers = calculateDailyActiveUsers(startOfDay, endOfDay);
         long onboardingCompleted = userRepository.countOnboardingCompleted();
 
@@ -66,6 +69,7 @@ public class AnalyticsService {
                 .weeklyActiveUsers(calculateWeeklyActiveUsers())
                 .monthlyActiveUsers(calculateMonthlyActiveUsers())
                 .newUsers(newUsers)
+                .weeklyNewUsers(weeklyNewUsers)
                 .totalMessages(totalMessages)
                 .userMessages(userMessages)
                 .assistantMessages(assistantMessages)
