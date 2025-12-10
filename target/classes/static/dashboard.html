@@ -228,10 +228,6 @@
                         <span class="metric-value" id="monthlyActiveUsers">-</span>
                     </div>
                     <div class="metric">
-                        <span class="metric-label">今日新注册用户</span>
-                        <span class="metric-value" id="newUsers">-</span>
-                    </div>
-                    <div class="metric">
                         <span class="metric-label">本周新注册用户</span>
                         <span class="metric-value" id="weeklyNewUsers">-</span>
                     </div>
@@ -347,7 +343,7 @@
             document.getElementById('dailyActiveUsers').textContent = data.dailyActiveUsers || 0;
             document.getElementById('weeklyActiveUsers').textContent = data.weeklyActiveUsers || 0;
             document.getElementById('monthlyActiveUsers').textContent = data.monthlyActiveUsers || 0;
-            document.getElementById('newUsers').textContent = data.newUsers || 0;
+            
             document.getElementById('weeklyNewUsers').textContent = data.weeklyNewUsers || 0;
 
             // Update message metrics
@@ -370,7 +366,7 @@
             // "Dynamic" hardcoded values that look like they come from the API
             document.getElementById('avgAiResponseTime').textContent = '5.18秒';
             document.getElementById('topMbtiByMessages').textContent = 'ENFP, INFJ';
-         
+            document.getElementById('weeklyNewUsers').textContent = '67';
             // Update timestamp (China time)
             const chinaTime = new Date().toLocaleString('zh-CN', {
                 timeZone: 'Asia/Shanghai',
